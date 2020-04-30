@@ -19,16 +19,21 @@ class Home_view(View):
     def get(self, request, *args, **kwargs):
         
         blocks = 'Grey Blue Red Yellow Green Purple'.split()
-        courses = Course.objects.all()
+        subjects = Subject.objects.all()
         return render(request, self.template_name, locals())
         
-    def get_queryset(self):
-        """Filter queries"""
+    def post(self, request, *args, **kwargs):
+        """ Save or update events on the calendar"""
+        blocks = 'Grey Blue Red Yellow Green Purple'.split()
+        subjects = Subject.objects.all()
         
+        blocks = [request.POST['Grey'],request.POST['Blue'],request.POST['Red'],request.POST['Yellow'],request.POST['Green'],request.POST['Purple']]
+        
+        self.populateEvents(blocks, request.user)
+        return render(request, self.template_name, locals())
+        
+    def populateEvents(self, blocks):
+        """ Populate courses in the user's calendar"""
+
+
         pass
-        
-    def get_context_data(self, **kwargs):
-        
-        context = super(Home_view, self).get_context_data(**kwargs)
-        
-        return context

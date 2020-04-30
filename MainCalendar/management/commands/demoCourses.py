@@ -1,8 +1,10 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from MainCalendar.models import Course, Subject
+
 import os
 import json
+from Account.models import Teacher
 
 class Command(BaseCommand):
 
@@ -12,4 +14,6 @@ class Command(BaseCommand):
             subjects = json.load(f)
 
         for subject in subjects:
-            Subject.objects.create(title=subject['title'], teacher=subject['teacher'], bio="Demo").save()
+            teacher = Teacher.objects.get_or_create(username=subject['teacher'])
+
+            Subject.objects.get_or_create(title=subject['title'], teacher=teacher[0])[0].save()

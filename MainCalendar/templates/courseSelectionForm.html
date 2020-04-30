@@ -1,19 +1,20 @@
 <div class="container">
  
 <div class="card mx-auto" style=" margin-top:3rem">
-  <h5 class="card-header">Time management</h5>
+  <h5 class="card-header text-center">Time management</h5>
   <div class="card-body">
     <h5 class="card-title">Select the course corresponding to the block</h5>
     
-<form>
-
+<form method="POST" action={% url 'home' %}>
+{% csrf_token %}
     {%for block in blocks%}
   <div class="form-group row">
     <label for="inputEmail3" class="col-sm-2 col-form-label">{{block}}</label>
     <div class="col-sm-10">
-      <select class="form-control" id="exampleFormControlSelect1">
-        {% for course in courses %}
-            <option>{{course}}</option>
+      <select class="form-control" id="{{forloop.counter}}" name={{block}}>
+            <option> -----------------------------</option>
+        {% for subject in subjects %}
+            <option>{{subject.title}}</option>
         {% endfor %}
     </select>
     </div>
