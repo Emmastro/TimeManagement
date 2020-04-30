@@ -5,6 +5,8 @@
 __pycache__
 db.sqlite3
 media
+TimeManagement/settings/local.py
+settings/local.py
 
 # Backup files # 
 *.bak 
