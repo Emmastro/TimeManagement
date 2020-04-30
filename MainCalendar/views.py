@@ -32,8 +32,16 @@ class Home_view(View):
         self.populateEvents(blocks, request.user)
         return render(request, self.template_name, locals())
         
-    def populateEvents(self, blocks):
+    def populateEvents(self, blocks, user):
         """ Populate courses in the user's calendar"""
 
 
         pass
+
+def privacy(request):
+
+    return render(request, 'privacy.html')
+
+def termsConditions(request):
+
+    return render(request, 'termsConditions.html')
