@@ -1,0 +1,42 @@
+[
+    {
+        "title":"Math A2",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"French",
+        "teacher":"Pauline",
+        "description":"Description"
+    },
+    {
+        "title":"Writing and Rhetoric",
+        "teacher":"Takodwa",
+        "description":"Description"
+    },
+    {
+        "title":"Entrepreneurial Leadership 2",
+        "teacher":"Tait",
+        "description":"Description"
+    },
+    {
+        "title":"Entrepreneurial Leadership 1",
+        "teacher":"Kembo",
+        "description":"Description"
+    },
+    {
+        "title":"Omong",
+        "teacher":"Maya",
+        "description":"Description"
+    },
+    {
+        "title":"Creative art",
+        "teacher":"Kgagudi",
+        "description":"Description"
+    },
+    {
+        "title":"Computer science",
+        "teacher":"Manda",
+        "description":"Description"
+    }
+]

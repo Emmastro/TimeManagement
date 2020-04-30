@@ -19,6 +19,8 @@ from django.conf.urls import include
 
 
 urlpatterns = [
+    
+    path('', include('MainCalendar.urls')),
     path('admin/', admin.site.urls),
-    path('', include('MainCalendar.urls'))
+    path('account/', include('Account.urls')),
 ]

@@ -12,3 +12,4 @@ class Subject(models.Model):
 
 	title = models.CharField(max_length = 128)
 	teacher = models.ForeignKey('Account.Teacher', on_delete=models.CASCADE)
+	description = models.TextField()
