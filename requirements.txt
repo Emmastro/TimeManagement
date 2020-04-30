@@ -1,20 +1,11 @@
 arrow==0.14.7
 asgiref==3.2.7
-Django==3.0.5
-icalendar==4.0.5
-ics==0.7
-pkg-resources==0.0.0
-python-dateutil==2.8.1
-pytz==2019.3
-six==1.14.0
-sqlparse==0.3.1
-TatSu==4.4.0
-arrow==0.14.7
-asgiref==3.2.7
 cachetools==4.1.0
 certifi==2020.4.5.1
 chardet==3.0.4
+dj-database-url==0.5.0
 Django==3.0.5
+django-heroku==0.3.1
 google-api-core==1.17.0
 google-api-python-client==1.8.2
 google-auth==1.14.1
@@ -28,6 +19,7 @@ idna==2.9
 oauthlib==3.1.0
 pkg-resources==0.0.0
 protobuf==3.11.3
+psycopg2==2.8.5
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 python-dateutil==2.8.1
@@ -40,3 +32,4 @@ sqlparse==0.3.1
 TatSu==4.4.0
 uritemplate==3.0.1
 urllib3==1.25.9
+whitenoise==5.0.1
