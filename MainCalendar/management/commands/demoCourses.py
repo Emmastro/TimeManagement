@@ -4,13 +4,13 @@ from MainCalendar.models import Course, Subject
 
 import os
 import json
-from Account.models import Teacher
+from Accounts.models import Teacher
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        with open(os.path.join(settings.BASE_DIR,'MainCalendar/management/data/Subjects.json')) as f:
+        with open(os.path.join(settings.BASE_DIR,'data/Subjects.json')) as f:
             subjects = json.load(f)
 
         for subject in subjects:

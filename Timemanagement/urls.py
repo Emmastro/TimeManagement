@@ -22,5 +22,5 @@ urlpatterns = [
     
     path('', include('MainCalendar.urls')),
     path('admin/', admin.site.urls),
-    path('account/', include('Account.urls')),
+    path('accounts/', include('Accounts.urls')),
 ]

@@ -11,5 +11,5 @@ class Course(models.Model):
 class Subject(models.Model):
 
 	title = models.CharField(max_length = 128)
-	teacher = models.ForeignKey('Account.Teacher', on_delete=models.CASCADE)
+	teacher = models.ForeignKey('Accounts.Teacher', on_delete=models.CASCADE)
 	description = models.TextField()

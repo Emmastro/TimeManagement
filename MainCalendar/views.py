@@ -5,7 +5,7 @@ from django.views import View
 
 from django.utils.decorators import method_decorator
 
-from Account.models import Student
+from Accounts.models import Student
 from django.contrib.auth.decorators import login_required
 from .models import*
 

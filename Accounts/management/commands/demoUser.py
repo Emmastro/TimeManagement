@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
-from Account.models import Student, Teacher
+from Accounts.models import Student, Teacher
 import os
 
 class Command(BaseCommand):
