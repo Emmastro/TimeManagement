@@ -32,3 +32,4 @@ TatSu==4.4.0
 uritemplate==3.0.1
 urllib3==1.25.9
 whitenoise==5.0.1
+gunicorn
