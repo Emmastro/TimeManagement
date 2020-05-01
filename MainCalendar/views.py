@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
 from django.views import View
 
 from django.utils.decorators import method_decorator
@@ -8,6 +7,8 @@ from django.utils.decorators import method_decorator
 from Accounts.models import Student
 from django.contrib.auth.decorators import login_required
 from .models import*
+from GoogleCalendar.main import GoogleCalendar
+
 
 @method_decorator(login_required, name='dispatch')
 class Home_view(View):
@@ -28,15 +29,14 @@ class Home_view(View):
         subjects = Subject.objects.all()
         
         blocks = [request.POST['Grey'],request.POST['Blue'],request.POST['Red'],request.POST['Yellow'],request.POST['Green'],request.POST['Purple']]
-        
-        self.populateEvents(blocks, request.user)
+        print(Student.objects.all())
+        calendar = GoogleCalendar(
+            Student.objects.get(username="Demo00")#pk=request.user.id)
+            )
+        calendar.create()
+
         return render(request, self.template_name, locals())
         
-    def populateEvents(self, blocks, user):
-        """ Populate courses in the user's calendar"""
-
-
-        pass
 
 def privacy(request):
 
