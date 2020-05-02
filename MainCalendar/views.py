@@ -28,10 +28,17 @@ class Home_view(View):
         blocks = 'Grey Blue Red Yellow Green Purple'.split()
         subjects = Subject.objects.all()
         
-        blocks = [request.POST['Grey'],request.POST['Blue'],request.POST['Red'],request.POST['Yellow'],request.POST['Green'],request.POST['Purple']]
-        print(Student.objects.all())
+        courses = [
+            request.POST['Grey'],
+            request.POST['Blue'],
+            request.POST['Red'],
+            request.POST['Yellow'],
+            request.POST['Green'],
+            request.POST['Purple']]
+        print(courses)
         calendar = GoogleCalendar(
-            Student.objects.get(username="Demo00")#pk=request.user.id)
+            user=Student.objects.get(username="Demo00"),#pk=request.user.id),
+            courses=courses
             )
         calendar.create()
 
