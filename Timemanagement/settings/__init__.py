@@ -5,4 +5,4 @@ try:
 
 except Exception as e:
 	
-	from .production import *
+	from .production_aws import *
