@@ -4,18 +4,30 @@ from django.views import View
 
 from django.utils.decorators import method_decorator
 
+from Accounts.auth_helper import initialize_context
 from Accounts.models import Student
 from django.contrib.auth.decorators import login_required
 from .models import*
 from GoogleCalendar.main import GoogleCalendar
 
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from MicrosoftCalendar.graph_helper import get_user, get_calendar_events
+import dateutil.parser
 
-@method_decorator(login_required, name='dispatch')
-class Home_view(View):
+
+
+def home(request):
+  context = initialize_context(request)
+
+  return render(request, 'home.html', context)
+
+
+class CoursesView(View):
     
     model = Student
-    template_name = "main.html"
-    
+    template_name = "courses.html"
     
     def get(self, request, *args, **kwargs):
         
@@ -36,11 +48,17 @@ class Home_view(View):
             request.POST['Green'],
             request.POST['Purple']]
         print(courses)
-        calendar = GoogleCalendar(
-            user=Student.objects.get(username="Demo00"),#pk=request.user.id),
-            courses=courses
-            )
-        calendar.create()
+        google = False
+        microsoft = True
+
+        if google:
+            calendar = GoogleCalendar(
+                user=Student.objects.get(username="Demo00"),#pk=request.user.id),
+                courses=courses
+                )
+            calendar.create()
+        elif microsoft:
+            pass
 
         return render(request, self.template_name, locals())
         

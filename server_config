@@ -1,0 +1,11 @@
+<VirtualHost _default_:80>
+    WSGIScriptAlias / /opt/bitnami/apps/django/django_projects/TimeManagement/Timemanagement/wsgi.py
+
+    <Directory /opt/bitnami/apps/django/django_projects/TimeManagement>
+    AllowOverride all
+        Require all granted
+        Options FollowSymlinks
+    </Directory>
+
+    DocumentRoot /opt/bitnami/apps/django/django_projects/TimeManagement
+</VirtualHost>

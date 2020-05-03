@@ -3,7 +3,5 @@ from . import views
 
 
 urlpatterns = [
-
-	path('', views.Home_view.as_view(), name='home'),
-
+	path('calendar/', views.calendar, name='calendar'),
 ]
