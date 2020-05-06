@@ -7,7 +7,7 @@
   <div class="card-body">
     <h5 class="card-title">Select the course corresponding to the block</h5>
     
-<form method="POST" action={% url 'home' %}>
+<form method="POST" action={% url 'courses' %}>
 {% csrf_token %}
     {%for block in blocks%}
   <div class="form-group row">

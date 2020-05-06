@@ -24,3 +24,4 @@ def calendar(request):
     context['events'] = events['value']
 
   return render(request, 'calendar.html', context)
+
