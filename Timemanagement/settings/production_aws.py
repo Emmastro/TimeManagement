@@ -3,7 +3,7 @@ import os
 import dj_database_url
 from .base import*
 
-ALLOWED_HOSTS = ['54.208.156.24']
+ALLOWED_HOSTS = ['3.223.180.215']
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
