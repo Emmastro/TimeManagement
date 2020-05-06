@@ -86,14 +86,13 @@ def rruleToMSRecurrence(rrule, startDate):
     }
   }
 
-  print(recurrence['recurrence'])
+  
   return recurrence
 
 def create_events(token, calendarId, courses):
   
-  print("Creating Events")
 
-  #colors = '8 7 11 5 10 3'.split()
+  colors = 'Gray Blue Red Yellow Green Purple'.split()
   locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split()
   
   graph_client = OAuth2Session(token=token)
@@ -101,7 +100,7 @@ def create_events(token, calendarId, courses):
 
   for block, subject in enumerate(courses): #self.user.courses:
   # Go over every subjects
-      print(block,subject)
+
       for i, eventBlock in enumerate(eventData[block]):
         # Go over the reccurent group of the subject
 
@@ -122,6 +121,7 @@ def create_events(token, calendarId, courses):
               'dateTime': eventBlock['end'],
               'timeZone': 'Africa/Johannesburg',
               },
+              'categories': ['{} category'.format(colors[block])],
               'recurrence': rruleToMSRecurrence(eventBlock['recurrence'], eventBlock['start'])['recurrence']
               #'colorId':colors[block],
           }
@@ -129,4 +129,4 @@ def create_events(token, calendarId, courses):
             '{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
             json=event,
             headers=headers)
-          print(eventResponse, eventResponse.json())
+          print(eventResponse)
