@@ -1,11 +1,10 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
-
-# <FirstCodeSnippet>
 import yaml
 from requests_oauthlib import OAuth2Session
 import os
 import time
+from django.conf import settings
 
 # This is necessary for testing with non-HTTPS localhost
 # Remove this if deploying to production
@@ -17,7 +16,9 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 os.environ['OAUTHLIB_IGNORE_SCOPE_CHANGE'] = '1'
 
 # Load the oauth_settings.yml file
-stream = open('oauth_settings.yml', 'r')
+
+stream = open(os.path.join(settings.BASE_DIR, 'data/oauth_settings.yml'), 'r')
+
 settings = yaml.load(stream, yaml.SafeLoader)
 authorize_url = '{0}{1}'.format(settings['authority'], settings['authorize_endpoint'])
 token_url = '{0}{1}'.format(settings['authority'], settings['token_endpoint'])
