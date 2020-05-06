@@ -5,6 +5,7 @@ from .base import*
 
 ALLOWED_HOSTS = ['3.223.180.215']
 
+HOSTED = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
