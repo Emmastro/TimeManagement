@@ -3,7 +3,7 @@ import os
 import dj_database_url
 from .base import*
 
-ALLOWED_HOSTS = ['3.223.180.215']
+ALLOWED_HOSTS = ['3.223.180.215', 'alatime.itverse.org']
 
 HOSTED = True
 

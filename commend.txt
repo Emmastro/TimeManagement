@@ -1,3 +1,4 @@
 # Restart the server
 sudo /opt/bitnami/ctlscript.sh restart apache
 
+cd /opt/bitnami/apps/django/django_projects/TimeManagement
