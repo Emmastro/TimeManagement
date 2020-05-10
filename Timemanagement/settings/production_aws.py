@@ -3,7 +3,7 @@ import os
 import dj_database_url
 from .base import*
 
-ALLOWED_HOSTS = ['3.223.180.215', 'alatime.itverse.org']
+ALLOWED_HOSTS = ['3.223.180.215', 'alatime.itverse.org', 'www.alatime.itverse.org']
 
 HOSTED = True
 
@@ -20,12 +20,12 @@ DATABASES = {
     }
 }
 
-CORS_REPLACE_HTTPS_REFERER      = True
+CORS_REPLACE_HTTPS_REFERER      = False
 HOST_SCHEME                     = "https://"
-SECURE_PROXY_SSL_HEADER         = True
-SECURE_SSL_REDIRECT             = True
-SESSION_COOKIE_SECURE           = True
-CSRF_COOKIE_SECURE              = True
+SECURE_PROXY_SSL_HEADER         = None
+SECURE_SSL_REDIRECT             = False
+SESSION_COOKIE_SECURE           = False
+CSRF_COOKIE_SECURE              = False
 SECURE_HSTS_SECONDS             = None
-SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
-SECURE_FRAME_DENY               = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
+SECURE_FRAME_DENY               = False
