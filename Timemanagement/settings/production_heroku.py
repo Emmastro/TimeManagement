@@ -8,6 +8,7 @@ from .base import*
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Connect to production database
+HOSTED = True
 
 DATABASES = {
     'default': {
