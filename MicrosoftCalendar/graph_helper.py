@@ -93,6 +93,19 @@ def rruleToMSRecurrence(rrule, startDate):
   
   return recurrence
 
+def build(year):
+
+  pass
+
+def sport(name):
+
+  pass
+
+def extraCurricular(extra):
+
+  pass
+
+
 def create_events(token, calendarId, courses):
   
 
@@ -100,7 +113,6 @@ def create_events(token, calendarId, courses):
   locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split()
   
   graph_client = OAuth2Session(token=token)
-
 
   for block, subject in enumerate(courses): #self.user.courses:
   # Go over every subjects
