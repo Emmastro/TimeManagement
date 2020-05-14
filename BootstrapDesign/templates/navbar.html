@@ -1,30 +1,46 @@
-{% load static %}
-<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Time management</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Account</a>
-      </li>
-    {% comment '' %}
-    
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown link
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+<nav class="navbar navbar-dark navbar-expand-md fixed-top bg-dark" style="height: 60px;">
+    <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1" style="margin-right: 0px;margin-left: 0px;"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse"
+            id="navcol-1">
+            <ul class="nav navbar-nav flex-grow-1 justify-content-between" style="background-color: #343a40;margin-right: 0px;margin-left: 0px;padding-left: 20px;">
+                
+                <li class="nav-item" role="presentation"><a class="nav-link" href="#"><i class="icon ion-bonfire apple-logo"></i></a></li>
+                <li class="nav-item" role="presentation"><a href="{% url 'home' %}" class="nav-link{% if request.resolver_match.view_name == 'home' %} active{% endif %}">Home</a>
+</li>            
+                {% if user.is_authenticated %}
+              <li class="nav-item" data-turbolinks="false">
+                <a class="nav-link{% if request.resolver_match.view_name == 'courses' %} active{% endif %}" href="{% url 'courses' %}">Courses</a>
+              </li>
+              <li class="nav-item" data-turbolinks="false">
+                <a class="nav-link{% if request.resolver_match.view_name == 'calendar' %} active{% endif %}" href="{% url 'calendar' %}">Calendar</a>
+              </li>
+            {% endif %}
+            
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/#contact">Contact</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/#help">Help</a></li>
+            {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                  {% if user.avatar %}
+                    <img src="{{ user.avatar }}" class="rounded-circle align-self-center mr-2" style="width: 32px;">
+                  {% else %}
+                    <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2" style="width: 32px;"></i>
+                  {% endif %}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <h5 class="dropdown-item-text mb-0">{{ user.name }}</h5>
+                  <p class="dropdown-item-text text-muted mb-0">{{ user.email }}</p>
+                  <div class="dropdown-divider"></div>
+                  <a href="{% url 'logout' %}" class="dropdown-item">Sign Out</a>
+                </div>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a href="{% url 'login' %}" class="nav-link">Sign In</a>
+              </li>
+            {% endif %} 
+         </ul>
         </div>
-      </li>
-    {% endcomment %}
-    </ul>
-  </div>
+    </div>
 </nav>
+

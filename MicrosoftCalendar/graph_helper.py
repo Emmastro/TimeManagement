@@ -26,19 +26,23 @@ def get_calendar_events(token):
 
 def create_calendar(token):
   
+  calendarId=None
+
   graph_client = OAuth2Session(token=token)
   query_params = {
-        'name':'My course'
+        'name':'My courses'
     }
-    #help(graph_client)
+    
   calendar = graph_client.post(
       '{0}/me/calendars'.format(graph_url),
       json=query_params,
       headers=headers)
 
-  print(calendar.json())
-
-  return calendar.json()['id']
+  try:
+    calendarId = calendar.json()['id']
+  except:
+    pass
+  return calendarId
 
 def bydayConvert(value):
 

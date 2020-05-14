@@ -1,6 +1,66 @@
 [
     {
-        "title":"Math A2",
+        "title":"English for Excellence",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Creative Arts",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Chemistry",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Mathematics",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Biology",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Physics",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"African Studies ",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Writing and Rhetoric",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"History",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Economics",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"Geography",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"English literature",
+        "teacher":"Max",
+        "description":"Description"
+    },
+    {
+        "title":"English language",
         "teacher":"Max",
         "description":"Description"
     },
@@ -15,17 +75,12 @@
         "description":"Description"
     },
     {
-        "title":"Entrepreneurial Leadership 2",
+        "title":"Entrepreneurial Leadership",
         "teacher":"Tait",
         "description":"Description"
     },
     {
-        "title":"Entrepreneurial Leadership 1",
-        "teacher":"Kembo",
-        "description":"Description"
-    },
-    {
-        "title":"Omong",
+        "title":"Omang",
         "teacher":"Maya",
         "description":"Description"
     },

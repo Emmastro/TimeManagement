@@ -1,12 +1,14 @@
-<!-- Copyright (c) Microsoft Corporation.
-     Licensed under the MIT License. -->
-
-<!-- <HomeSnippet> -->
 {% extends "layout.html" %}
 {% block content %}
+
+
+{% endblock %}
+
+{% comment '' %}
 <div class="jumbotron">
   <h1>Time management</h1>
   <p class="lead">This app creates events on your calendar</p>
+  
   {% if user.is_authenticated %}
     <h4>Welcome {{ user.name }}!</h4>
     <p>Use the navigation bar at the top of the page to get started.</p>
@@ -14,5 +16,5 @@
     <a href="{% url 'login' %}" class="btn btn-primary btn-large">Click here to sign in</a>
   {% endif %}
 </div>
-{% endblock %}
-<!-- </HomeSnippet> -->
+<div class="overlay"></div>
+{% endcomment %}
