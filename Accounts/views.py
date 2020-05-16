@@ -60,4 +60,4 @@ def callback(request):
   store_token(request, token)
   store_user(request, user)
 
-  return HttpResponseRedirect(reverse('home'))
+  return HttpResponseRedirect(reverse('courses'))
