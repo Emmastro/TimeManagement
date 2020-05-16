@@ -16,7 +16,7 @@ from django.urls import reverse
 from MicrosoftCalendar.graph_helper import get_user, get_calendar_events, create_calendar, create_events
 import dateutil.parser
 
-@method_decorator(login_required, name='dispatch')
+
 class CoursesView(View):
     
     model = Student
