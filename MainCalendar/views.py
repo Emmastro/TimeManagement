@@ -16,14 +16,7 @@ from django.urls import reverse
 from MicrosoftCalendar.graph_helper import get_user, get_calendar_events, create_calendar, create_events
 import dateutil.parser
 
-
-
-def home(request):
-  context = initialize_context(request)
-
-  return render(request, 'home.html', context)
-
-
+@method_decorator(login_required, name='dispatch')
 class CoursesView(View):
     
     model = Student
@@ -48,7 +41,7 @@ class CoursesView(View):
             request.POST['Yellow'],
             request.POST['Green'],
             request.POST['Purple']]
-        print(courses)
+
         google = False
         microsoft = True
 
@@ -62,7 +55,7 @@ class CoursesView(View):
             calendarId = create_calendar(token=token)
             events = create_events(token=token, calendarId=calendarId, courses=courses)
 
-        return render(request, self.template_name, locals())
+        return render(request, "success.html", locals())
         
 
 def privacy(request):

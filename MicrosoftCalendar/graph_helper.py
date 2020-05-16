@@ -24,24 +24,29 @@ def get_calendar_events(token):
 
   return events.json()
 
-def create_calendar(token):
-  
+def create_calendar(token, calendarName="ALA Calendar"):
+
   calendarId=None
 
-  graph_client = OAuth2Session(token=token)
-  query_params = {
-        'name':'My courses'
-    }
-    
-  calendar = graph_client.post(
-      '{0}/me/calendars'.format(graph_url),
-      json=query_params,
-      headers=headers)
+  for l in range(5):
 
-  try:
-    calendarId = calendar.json()['id']
-  except:
-    pass
+    graph_client = OAuth2Session(token=token)
+    query_params = {
+          'name':calendarName,
+      }
+      
+    calendar = graph_client.post(
+        '{0}/me/calendars'.format(graph_url),
+        json=query_params,
+        headers=headers
+        )
+    calendarId = calendar.json().get('id', None)
+    
+    if calendarId!=None:
+      break
+    else:
+      calendarName+=str(l)
+
   return calendarId
 
 def bydayConvert(value):
@@ -110,7 +115,7 @@ def create_events(token, calendarId, courses):
   
 
   colors = 'Gray Blue Red Yellow Green Purple'.split()
-  locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split()
+  locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split() #**Implement real locations
   
   graph_client = OAuth2Session(token=token)
 

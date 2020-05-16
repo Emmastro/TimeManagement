@@ -1,10 +1,14 @@
-<nav class="navbar navbar-dark navbar-expand-md fixed-top bg-dark" style="height: 60px;">
-    <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1" style="margin-right: 0px;margin-left: 0px;"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean">
+    
+    <div class="container"><a class="navbar-brand" href="#">Time management</a><button data-toggle="collapse" data-target="#navcol-1" class="navbar-toggler"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse"
             id="navcol-1">
-            <ul class="nav navbar-nav flex-grow-1 justify-content-between" style="background-color: #343a40;margin-right: 0px;margin-left: 0px;padding-left: 20px;">
-                
+            <ul class="nav navbar-nav ml-auto">
+                <li role="presentation" class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li role="presentation" class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li role="presentation" class="nav-item"><a class="nav-link" href="#team">Team</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="#"><i class="icon ion-bonfire apple-logo"></i></a></li>
+                
                 <li class="nav-item" role="presentation"><a href="{% url 'home' %}" class="nav-link{% if request.resolver_match.view_name == 'home' %} active{% endif %}">Home</a>
 </li>            
                 {% if user.is_authenticated %}
@@ -39,8 +43,10 @@
                 <a href="{% url 'login' %}" class="nav-link">Sign In</a>
               </li>
             {% endif %} 
-         </ul>
+           
+            </ul>
         </div>
     </div>
+
 </nav>
 

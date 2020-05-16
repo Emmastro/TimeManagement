@@ -23,6 +23,6 @@ urlpatterns = [
     path('', include('MainCalendar.urls')),
     path('', include('Accounts.urls')),
     path('', include('MicrosoftCalendar.urls')),
-    #path('', include('GoogleCalendar.urls')),
+    path('', include('Landingpage.urls')),
     path('admin/', admin.site.urls),
 ]
