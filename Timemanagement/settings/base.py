@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'MicrosoftCalendar',
     'GoogleCalendar',
     'BootstrapDesign',
+    'BootstrapAdmin',
     'Landingpage',
 ]
 

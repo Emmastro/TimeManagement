@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from django.views import View
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.utils.decorators import method_decorator
 
@@ -13,8 +14,67 @@ from GoogleCalendar.main import GoogleCalendar
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from MicrosoftCalendar.graph_helper import get_user, get_calendar_events, create_calendar, create_events
+from MicrosoftCalendar.graph_helper import get_calendars, get_user, get_calendar_events, create_calendar, create_events
 import dateutil.parser
+
+
+
+class DashboardView(View):
+
+    template_name = 'admin_.html'
+    
+
+    def get(self, request):
+        
+        token = get_token(request)
+        # Get the list of calendars from the user
+        calendars = get_calendars(token)
+        return render(request, self.template_name)
+
+class PeriodView(View):
+
+    template_name = 'period_.html'
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, self.template_name)
+
+class SaveCalendar(View):
+    # A calendar can be a term, or any timeframe with coherent activities
+
+    # Check if a calendar with this name does not exist
+
+    # Create the calendar
+
+    # Save the transaction on the database?
+    model = None
+    fields = None
+
+class UpdateCalendar(View):
+
+    # Get the Calendar
+
+    # Update the calendar
+    model = None
+    fields = None
+    
+
+class SaveActivities(View):
+
+    # Get the Calendar where these activities should be input
+
+    # Save the new activities on the calendar
+
+    # Save the transaction on the database?
+    model = None
+    fields = None
+    
+class UpdateActivities(View):
+
+    # Check if there is already some events claching with the new events
+
+    model = None
+    fields = None
 
 
 class CoursesView(View):

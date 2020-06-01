@@ -4,12 +4,21 @@ from django.db import models
 class Course(models.Model):
 	""" Consider the subject and the block """
 
-	COLORS = models.TextChoices('Color', "Grey Blue Red Yellow Green Purple")
-	subject = models.ForeignKey('MainCalendar.Subject', on_delete=models.CASCADE)
+	COLORS = models.TextChoices('Block', "Grey Blue Red Yellow Green Purple Sport Extra-Curricular ")
+	subject = models.ForeignKey('MainCalendar.Activity', on_delete=models.CASCADE)
 	block = models.CharField(choices = COLORS.choices, max_length=20)
 
-class Subject(models.Model):
+class Activity(models.Model):
 
 	title = models.CharField(max_length = 128)
-	teacher = models.ForeignKey('Accounts.Teacher', on_delete=models.CASCADE)
 	description = models.TextField()
+
+class Schedule(models.Model):
+	""" Can be a term, or any custom period"""
+
+	title = models.CharField(max_length=128)
+	calendarId = models.CharField(max_length=125)
+	begin = models.DateTimeField()
+	end = models.DateTimeField()
+	activities = models.ManyToManyField('MainCalendar.Activity')
+

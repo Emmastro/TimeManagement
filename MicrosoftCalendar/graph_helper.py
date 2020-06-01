@@ -11,8 +11,23 @@ def get_user(token):
 
   return user.json()
 
+def get_calendars(token):
+
+  graph_client = OAuth2Session(token=token)
+
+  query_params = {
+
+  }
+
+  calendars = graph_client.get('{0}/me/calendars'.format(graph_url))
+
+  print(calendars.json())
+
+  return calendars
+
 
 def get_calendar_events(token):
+
   graph_client = OAuth2Session(token=token)
 
   query_params = {
