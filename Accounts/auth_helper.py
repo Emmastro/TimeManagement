@@ -28,6 +28,7 @@ token_url = '{0}{1}'.format(settings['authority'], settings['token_endpoint'])
 # Method to generate a sign-in url
 def get_sign_in_url():
   # Initialize the OAuth client
+  print('Redirect: ', settings['redirect'])
   aad_auth = OAuth2Session(settings['app_id'],
     scope=settings['scopes'],
     redirect_uri=settings['redirect'])

@@ -21,79 +21,45 @@ import dateutil.parser
 
 class DashboardView(View):
 
-    template_name = 'admin_.html'
+    template_name = 'student_dashboard.html'
     
 
     def get(self, request):
         
+        return render(request, self.template_name, locals())
+
+class CalendarActivitiesView(View):
+
+    template_name = 'calendar_activities.html'
+
+    def get(self, request, *args, **kwargs):
+        
         token = get_token(request)
         # Get the list of calendars from the user
         calendars = get_calendars(token)
-        return render(request, self.template_name)
+        calendarNames = []
 
-class PeriodView(View):
-
-    template_name = 'period_.html'
-
-    def get(self, request, *args, **kwargs):
-
-        return render(request, self.template_name)
-
-class SaveCalendar(View):
-    # A calendar can be a term, or any timeframe with coherent activities
-
-    # Check if a calendar with this name does not exist
-
-    # Create the calendar
-
-    # Save the transaction on the database?
-    model = None
-    fields = None
-
-class UpdateCalendar(View):
-
-    # Get the Calendar
-
-    # Update the calendar
-    model = None
-    fields = None
-    
-
-class SaveActivities(View):
-
-    # Get the Calendar where these activities should be input
-
-    # Save the new activities on the calendar
-
-    # Save the transaction on the database?
-    model = None
-    fields = None
-    
-class UpdateActivities(View):
-
-    # Check if there is already some events claching with the new events
-
-    model = None
-    fields = None
-
-
-class CoursesView(View):
-    
-    model = Student
-    template_name = "courses.html"
-    
-    def get(self, request, *args, **kwargs):
+        for c in calendars:
+            calendarNames.append(c['name'])
         
-        blocks = 'Grey Blue Red Yellow Green Purple'.split()
-        subjects = Subject.objects.all()
+        print(calendarNames)
         return render(request, self.template_name, locals())
-        
+
     def post(self, request, *args, **kwargs):
-        """ Save or update events on the calendar"""
-        blocks = 'Grey Blue Red Yellow Green Purple'.split()
-        subjects = Subject.objects.all()
+        """ Get or Create a calendar and add the activities/events on it"""
+
         token = get_token(request)
 
+        # Get or create calendar
+        
+        calendarId = create_calendar(token=token)
+        #**Implement Getting an existing calendar
+
+        # Add activities/events
+        #** Get the blocks from the form        
+        blocks = 'Grey Blue Red Yellow Green Purple'.split()
+        
+        #** Get the activities from the form
         courses = [
             request.POST['Grey'],
             request.POST['Blue'],
@@ -101,19 +67,14 @@ class CoursesView(View):
             request.POST['Yellow'],
             request.POST['Green'],
             request.POST['Purple']]
-
-        google = False
-        microsoft = True
-
-        if google:
+        #** The UI should allow to add more activities/events before submiting, and choose the event color
+        """if google:
             calendar = GoogleCalendar(
                 user=Student.objects.get(username="Demo00"),#pk=request.user.id),
                 courses=courses
                 )
-            calendar.create()
-        elif microsoft:
-            calendarId = create_calendar(token=token)
-            events = create_events(token=token, calendarId=calendarId, courses=courses)
+            calendar.create()"""
+        events = create_events(token=token, calendarId=calendarId, courses=courses)
 
         return render(request, "success.html", locals())
         

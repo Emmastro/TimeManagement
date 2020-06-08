@@ -21,9 +21,7 @@ def get_calendars(token):
 
   calendars = graph_client.get('{0}/me/calendars'.format(graph_url))
 
-  print(calendars.json())
-
-  return calendars
+  return calendars.json()['value']
 
 
 def get_calendar_events(token):
