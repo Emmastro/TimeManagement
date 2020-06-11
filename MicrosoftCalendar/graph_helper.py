@@ -1,5 +1,5 @@
 from requests_oauthlib import OAuth2Session
-from MainCalendar.eventsData import eventData
+from MainCalendar.eventsData import eventData, getEndTime
 
 graph_url = 'https://graph.microsoft.com/v1.0'
 headers = {"Content-Type": "application/json"}
@@ -37,7 +37,7 @@ def get_calendar_events(token):
 
   return events.json()
 
-def create_calendar(token, calendarName="ALA Calendar"):
+def create_calendar(token, name="ALA Calendar"):
 
   calendarId=None
 
@@ -45,7 +45,7 @@ def create_calendar(token, calendarName="ALA Calendar"):
 
     graph_client = OAuth2Session(token=token)
     query_params = {
-          'name':calendarName,
+          'name':name,
       }
       
     calendar = graph_client.post(
@@ -58,7 +58,7 @@ def create_calendar(token, calendarName="ALA Calendar"):
     if calendarId!=None:
       break
     else:
-      calendarName+=str(l)
+      name+=str(l)
 
   return calendarId
 
@@ -124,9 +124,14 @@ def extraCurricular(extra):
   pass
 
 
-def create_events(token, calendarId, courses):
+def create_events(token, calendarId, courses, start, end):
   
+  # Format for start and end: 2020-09-18
+  # End format: YYYYMMDD
 
+  end = end.replace('-','')
+  print("end", end)
+  print('start', start)
   colors = 'Gray Blue Red Yellow Green Purple'.split()
   locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split() #**Implement real locations
   
@@ -137,7 +142,7 @@ def create_events(token, calendarId, courses):
 
       for i, eventBlock in enumerate(eventData[block]):
         # Go over the reccurent group of the subject
-
+          
           event = {
               'Subject': subject,
               'Location':{
@@ -148,19 +153,23 @@ def create_events(token, calendarId, courses):
                 "Content": "This is the course description"
                 },
               'start': {
-                  'dateTime': eventBlock['start'],
+                  'dateTime': '{}T{}:00'.format(start, eventBlock['start']),
                   'timeZone': 'Africa/Johannesburg',
               },
               'end': {
-              'dateTime': eventBlock['end'],
+              'dateTime': '{}T{}:00'.format(start, getEndTime(eventBlock['start'], eventBlock['duration'])),
               'timeZone': 'Africa/Johannesburg',
               },
               'categories': ['{} category'.format(colors[block])],
-              'recurrence': rruleToMSRecurrence(eventBlock['recurrence'], eventBlock['start'])['recurrence']
+              'recurrence': rruleToMSRecurrence(
+                eventBlock['recurrence']+';UNTIL={}T235900Z'.format(end), '{}T{}:00'.format(start, eventBlock['start'])
+                  )['recurrence']
               #'colorId':colors[block],
           }
+          print(event)
           eventResponse = graph_client.post(
             '{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
             json=event,
             headers=headers)
-          print(eventResponse)
+
+          

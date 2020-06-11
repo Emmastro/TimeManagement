@@ -25,8 +25,9 @@ class DashboardView(View):
     
 
     def get(self, request):
+        context = initialize_context(request)
         
-        return render(request, self.template_name, locals())
+        return render(request, self.template_name, context)
 
 class CalendarActivitiesView(View):
 
@@ -34,6 +35,8 @@ class CalendarActivitiesView(View):
 
     def get(self, request, *args, **kwargs):
         
+        context = initialize_context(request)
+
         token = get_token(request)
         # Get the list of calendars from the user
         calendars = get_calendars(token)
@@ -42,39 +45,55 @@ class CalendarActivitiesView(View):
         for c in calendars:
             calendarNames.append(c['name'])
         
-        print(calendarNames)
-        return render(request, self.template_name, locals())
+        context['calendarNames'] = calendarNames
+        
+        context['period'] = kwargs['period']
+        print(calendars)
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         """ Get or Create a calendar and add the activities/events on it"""
 
         token = get_token(request)
+        form_calendarId = int(request.POST['calendar'])
 
-        # Get or create calendar
+        # Create a calendar using the title from the form
+        if form_calendarId == 0:
+            calendarId = create_calendar(token=token, name = request.POST['calendar-name'])
         
-        calendarId = create_calendar(token=token)
-        #**Implement Getting an existing calendar
+        else: # Get the calendar selected
+            calendar = get_calendars(token=token)[form_calendarId-1]
+            calendarId = calendar['id']
 
         # Add activities/events
-        #** Get the blocks from the form        
+
+        #** Get the blocks from the form
+
         blocks = 'Grey Blue Red Yellow Green Purple'.split()
         
         #** Get the activities from the form
         courses = [
-            request.POST['Grey'],
-            request.POST['Blue'],
-            request.POST['Red'],
-            request.POST['Yellow'],
-            request.POST['Green'],
-            request.POST['Purple']]
+            request.POST['grey'],
+            request.POST['blue'],
+            request.POST['red'],
+            request.POST['yellow'],
+            request.POST['green'],
+            request.POST['purple']]
         #** The UI should allow to add more activities/events before submiting, and choose the event color
+        
         """if google:
             calendar = GoogleCalendar(
                 user=Student.objects.get(username="Demo00"),#pk=request.user.id),
                 courses=courses
                 )
             calendar.create()"""
-        events = create_events(token=token, calendarId=calendarId, courses=courses)
+       
+        events = create_events(
+            token=token,
+            calendarId=calendarId,
+            courses=courses,
+            start = request.POST['start'],
+            end = request.POST['end'])
 
         return render(request, "success.html", locals())
         
