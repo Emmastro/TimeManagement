@@ -1,5 +1,5 @@
 from requests_oauthlib import OAuth2Session
-from MainCalendar.eventsData import eventData, getEndTime
+from MainCalendar.eventsData import eventData
 
 graph_url = 'https://graph.microsoft.com/v1.0'
 headers = {"Content-Type": "application/json"}
@@ -79,7 +79,7 @@ def bydayConvert(value):
 
   return days 
 
-def rruleToMSRecurrence(rrule, startDate):
+def rruleToMSRecurrence(rrule, startDate, endDate):
   """ convert recurrence statement from rrule formate to the Microsoft calendar format"""
 
   #FREQ=WEEKLY;BYDAY=MO,TH;INTERVAL=2;UNTIL=20210530T220000Z
@@ -103,7 +103,7 @@ def rruleToMSRecurrence(rrule, startDate):
     "range": {
       "type": "endDate",
       "startDate": startDate[:10],
-      "endDate": "2021-06-01"
+      "endDate": "2020-09-01" #endDate[:10],
     }
     }
   }
@@ -111,17 +111,36 @@ def rruleToMSRecurrence(rrule, startDate):
   
   return recurrence
 
-def build(year):
+def toTwoDigits(a):
+  
+  if a<10:
+    a="0"+str(a)
 
-  pass
+  return a
 
-def sport(name):
+def getEndTime(startTime, duration):
 
-  pass
+    startTimeSplited = startTime.split(':')
+    startTimeInHour = int(startTimeSplited[0]) + int(startTimeSplited[1])/60
+    EndTime = startTimeInHour + duration
 
-def extraCurricular(extra):
+    a = int(EndTime)
+    b = int((EndTime - int(EndTime))*60)
 
-  pass
+    EndTime = '{}:{}'.format(toTwoDigits(a),toTwoDigits(b))
+    
+    return EndTime
+
+def getOffsetDate(start, offset):
+
+  # Find the exact date
+  print("Start", start)
+  year, month, day = start.split('-')
+  
+
+  date = "{}-{}-{}".format(year, month, toTwoDigits(int(day)+int(offset)))
+
+  return date
 
 
 def create_events(token, calendarId, courses, start, end):
@@ -130,8 +149,7 @@ def create_events(token, calendarId, courses, start, end):
   # End format: YYYYMMDD
 
   end = end.replace('-','')
-  print("end", end)
-  print('start', start)
+  
   colors = 'Gray Blue Red Yellow Green Purple'.split()
   locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split() #**Implement real locations
   
@@ -139,12 +157,19 @@ def create_events(token, calendarId, courses, start, end):
 
   for block, subject in enumerate(courses): #self.user.courses:
   # Go over every subjects
+      print('block', block, subject)
 
       for i, eventBlock in enumerate(eventData[block]):
         # Go over the reccurent group of the subject
           
+          eventStartDate = getOffsetDate(start, eventBlock['offset'])
+
+          print(i,
+          "Start", '{}T{}:00'.format(eventStartDate, eventBlock['start']),
+          "End", '{}T{}:00'.format(eventStartDate, getEndTime(eventBlock['start'], eventBlock['duration'])))
+
           event = {
-              'Subject': subject,
+              'Subject': subject + "-{}-{}".format(block,i),
               'Location':{
                 'displayName':locations[block]
                 } ,
@@ -153,23 +178,27 @@ def create_events(token, calendarId, courses, start, end):
                 "Content": "This is the course description"
                 },
               'start': {
-                  'dateTime': '{}T{}:00'.format(start, eventBlock['start']),
-                  'timeZone': 'Africa/Johannesburg',
+                  'dateTime': '{}T{}:00'.format(eventStartDate, eventBlock['start']),
+                  'timeZone': 'South Africa Standard Time',
               },
               'end': {
-              'dateTime': '{}T{}:00'.format(start, getEndTime(eventBlock['start'], eventBlock['duration'])),
-              'timeZone': 'Africa/Johannesburg',
+              'dateTime': '{}T{}:00'.format(eventStartDate, getEndTime(eventBlock['start'], eventBlock['duration'])),
+              'timeZone': 'South Africa Standard Time',
               },
               'categories': ['{} category'.format(colors[block])],
               'recurrence': rruleToMSRecurrence(
-                eventBlock['recurrence']+';UNTIL={}T235900Z'.format(end), '{}T{}:00'.format(start, eventBlock['start'])
-                  )['recurrence']
-              #'colorId':colors[block],
+                eventBlock['recurrence']+';UNTIL={}T235900Z'.format(end),
+                startDate = '{}T{}:00'.format(eventStartDate, eventBlock['start']),
+                endDate = '{}T{}:00'.format(end, eventBlock['start'])
+                )['recurrence'],
           }
-          print(event)
+          
           eventResponse = graph_client.post(
             '{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
             json=event,
             headers=headers)
+          #if eventResponse.json().get('error')!=None:
+          #  print("error", print(eventResponse.json()))
 
-          
+          print(eventResponse.json())
+          #help(eventResponse)

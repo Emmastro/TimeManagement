@@ -13,21 +13,6 @@ duration = 0 # Ending date // Format: YYYYMMDD
 
 #start: YYYY-MM-DDThh:mm:ss
 
-def getEndTime(startTime, duration):
-
-    print('startTime', startTime)
-    startTimeSplited = startTime.split(':')
-    startTimeInHour = int(startTimeSplited[0]) + int(startTimeSplited[1])/60
-    print('startTimeInHour', startTimeInHour, duration)
-    EndTime = startTimeInHour + duration
-    
-    
-    
-    EndTime = '{}:{}'.format(int(EndTime), int((EndTime - int(EndTime))*60))
-    
-    return EndTime
-
-
 
 eventData = [
 # Grey Block 0

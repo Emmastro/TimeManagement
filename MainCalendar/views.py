@@ -67,7 +67,7 @@ class CalendarActivitiesView(View):
 
         # Add activities/events
 
-        #** Get the blocks from the form
+        #** Get the blocks from the form (labels of each input)
 
         blocks = 'Grey Blue Red Yellow Green Purple'.split()
         
@@ -79,6 +79,7 @@ class CalendarActivitiesView(View):
             request.POST['yellow'],
             request.POST['green'],
             request.POST['purple']]
+
         #** The UI should allow to add more activities/events before submiting, and choose the event color
         
         """if google:
