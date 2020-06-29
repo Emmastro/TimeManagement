@@ -134,7 +134,7 @@ def getEndTime(startTime, duration):
 def getOffsetDate(start, offset):
 
   # Find the exact date
-  print("Start", start)
+  #print("Start", start)
   year, month, day = start.split('-')
   
 
@@ -157,19 +157,19 @@ def create_events(token, calendarId, courses, start, end):
 
   for block, subject in enumerate(courses): #self.user.courses:
   # Go over every subjects
-      print('block', block, subject)
+      #print('block', block, subject)
 
       for i, eventBlock in enumerate(eventData[block]):
         # Go over the reccurent group of the subject
           
           eventStartDate = getOffsetDate(start, eventBlock['offset'])
 
-          print(i,
-          "Start", '{}T{}:00'.format(eventStartDate, eventBlock['start']),
-          "End", '{}T{}:00'.format(eventStartDate, getEndTime(eventBlock['start'], eventBlock['duration'])))
+          #print(i,
+          #"Start", '{}T{}:00'.format(eventStartDate, eventBlock['start']),
+          #"End", '{}T{}:00'.format(eventStartDate, getEndTime(eventBlock['start'], eventBlock['duration'])))
 
           event = {
-              'Subject': subject + "-{}-{}".format(block,i),
+              'Subject': subject,
               'Location':{
                 'displayName':locations[block]
                 } ,
@@ -200,5 +200,5 @@ def create_events(token, calendarId, courses, start, end):
           #if eventResponse.json().get('error')!=None:
           #  print("error", print(eventResponse.json()))
 
-          print(eventResponse.json())
+          #print(eventResponse.json())
           #help(eventResponse)
