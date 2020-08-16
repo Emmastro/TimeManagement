@@ -48,7 +48,7 @@ class CalendarActivitiesView(View):
         context['calendarNames'] = calendarNames
         
         context['period'] = kwargs['period']
-        print(calendars)
+        #print(calendars)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
