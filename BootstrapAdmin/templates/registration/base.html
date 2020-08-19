@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login - Creative art</title>
+    {% include '../components/css.html' %}
+</head>
+
+<body class="" style="background-image: url(&quot;{%static 'campus10.jpg'%}&quot;);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-lg-6 col-xl-6">
+                <div class="card shadow-lg o-hidden border-0 my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+         
+                            <div class="col">
+                                <div class="p-5">
+                                {% block content %}
+                                {% endblock content %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src= {% static 'BootstrapAdmin/js/script.min.js' %}></script>
+</body>
+
+</html>

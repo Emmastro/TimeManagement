@@ -1,0 +1,48 @@
+{% extends 'registration/base.html' %}
+
+{% block content %}
+
+<div class="text-center">
+    <h4 class="text-dark mb-4">Welcome {% block back %}{% endblock back %} to ALA Art Department System</h4>
+    {% if form.errors and not form.non_field_errors %}
+    <p class="errornote">
+    {% if form.errors.items|length == 1 %}Please correct the error below.{% else %}Please correct the errors below.{% endif %}
+    </p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <p class="errornote">
+        {{ error }}
+    </p>
+    {% endfor %}
+    {% endif %}
+
+    <div id="content-main">
+
+    {% if user.is_authenticated %}
+    <p class="errornote">
+        You are authenticated as {{ username }}, but are not authorized to
+        access this page. Would you like to login to a different account?
+    </p>
+    {% endif %}
+</div>
+<form class="user" method="POST" action={%url 'login'%}>
+    {% csrf_token %}
+    {{ form.username.errors }}
+    
+    <div class="form-group"><input class="form-control form-control-user" type="username" id="username" aria-describedby="usernameHelp" placeholder="Enter your username ..." name="username"></div>
+    {{ form.password.errors }}
+    
+    <div class="form-group"><input class="form-control form-control-user" type="password" id="password" placeholder="Password" name="password"></div>
+    <div class="form-group">
+        <div class="custom-control custom-checkbox small">
+            <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>
+        </div>
+    </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Login</button>
+    
+</form>
+<div class="text-center"><a class="small" href={% url 'password_reset' %}>Forgot Password?</a></div>
+
+{% endblock content %}
+

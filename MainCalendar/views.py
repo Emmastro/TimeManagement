@@ -19,19 +19,53 @@ import dateutil.parser
 
 
 
-class DashboardView(View):
+class CalendarTemplateView(View):
 
-    template_name = 'student_dashboard.html'
-    
+    template_name = 'templates.html'
+
+    def get(self, request):
+
+        #context = initialize_context(request)
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+
+        return render(request, self.template_name, context)
+
+
+
+class CreateCalendarTemplate(View):
+
+    template_name = 'newTemplate.html'
+
+    def get(self, request):
+        
+        #context = initialize_context(request)
+
+        # TODO: JS setup the form (colums depending on the time interval, week templates depending on the number of cycles)
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        
+        # TODO: Getting data from the form and saving on the database
+        # TODO: Using the data saved as a calendar template for students
+        # TODO: Allow having bi weekly schedule template (week A and week B)
+        
+        return render(request, self.template_name, context)
+
+
+class DashboardView(View):
 
     def get(self, request):
         context = initialize_context(request)
         
         return render(request, self.template_name, context)
 
-class CalendarActivitiesView(View):
+class SetupCalendarView(View):
 
-    template_name = 'calendar_activities.html'
+    template_name = 'setupCalendar.html'
 
     def get(self, request, *args, **kwargs):
         
@@ -47,7 +81,6 @@ class CalendarActivitiesView(View):
         
         context['calendarNames'] = calendarNames
         
-        context['period'] = kwargs['period']
         print(calendars)
         return render(request, self.template_name, context)
 

@@ -1,0 +1,21 @@
+{% load static %}
+<div class="card">
+{% if cut == "0" %}
+<a href="request-borrowing/{{item.id}}" style="style:solid">
+{% else %}
+<a style="style:solid">
+{% endif %}
+
+    <img style="max-height:200px; max-width:180px" class="card-img-top w-100 d-block align-self-center" src="{{item.image_url}}" onerror="this.onerror=null;this.src='{%static 'art-tools.svg'%}';">
+</a>
+    <div class="card-body">
+        <h4 class="d-lg-flex justify-content-lg-center card-title">{{item.name}}</h4>
+        <h6 class="card-subtitle mb-2"><b>{{item.category}}</b></h6>
+      
+        <p class="card-text">
+        {%if cut == "0"%}{{item.description|truncatewords:10}}
+        {%else%}{{item.description}}
+        {%endif%}
+        </p>
+    </div>
+</div>
