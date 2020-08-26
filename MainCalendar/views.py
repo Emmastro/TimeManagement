@@ -43,9 +43,7 @@ class CreateCalendarTemplate(View):
 
     def post(self, request):
         
-        # TODO: Getting data from the form and saving on the database
         # TODO: Using the data saved as a calendar template for students
-        # TODO: Allow having bi weekly schedule template (week A and week B)
         context = {}
         data = request.POST
         templateName = data['template-name']
@@ -101,7 +99,7 @@ class SetupCalendarView(View):
     def get(self, request, *args, **kwargs):
         
         context = initialize_context(request)
-
+        templates = TimeTableTemplate.objects.all()
         token = get_token(request)
         # Get the list of calendars from the user
         calendars = get_calendars(token)
@@ -111,8 +109,8 @@ class SetupCalendarView(View):
             calendarNames.append(c['name'])
         
         context['calendarNames'] = calendarNames
+        context['templates'] = templates
         
-        print(calendars)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -144,23 +142,15 @@ class SetupCalendarView(View):
             request.POST['green'],
             request.POST['purple']]
 
-        #** The UI should allow to add more activities/events before submiting, and choose the event color
-        
-        """if google:
-            calendar = GoogleCalendar(
-                user=Student.objects.get(username="Demo00"),#pk=request.user.id),
-                courses=courses
-                )
-            calendar.create()"""
-       
         events = create_events(
             token=token,
             calendarId=calendarId,
             courses=courses,
-            start = request.POST['start'],
-            end = request.POST['end'])
+            startDate = request.POST['start'],
+            endDate = request.POST['end'],
+            template = request.POST['templates'])
 
-        return render(request, "success.html", locals())
+        return render(request, self.template_name, locals())
         
 
 def privacy(request):

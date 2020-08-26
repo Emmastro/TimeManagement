@@ -39,6 +39,4 @@ class Cell(models.Model):
 
 	color = models.SmallIntegerField()
 	
-	def __str__(self):
-		return self.color
 	
