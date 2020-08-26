@@ -1,38 +1,32 @@
 from django.shortcuts import render
 
 from django.views import View
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from django.utils.decorators import method_decorator
-
-from Accounts.auth_helper import initialize_context, get_token
-from Accounts.models import Student
 from django.contrib.auth.decorators import login_required
-from .models import*
-from GoogleCalendar.main import GoogleCalendar
-
+from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+
+from Accounts.auth_helper import initialize_context, get_token
+from Accounts.models import Student
+
+from .models import*
+
 from MicrosoftCalendar.graph_helper import get_calendars, get_user, get_calendar_events, create_calendar, create_events
+
 import dateutil.parser
 
 
-
-class CalendarTemplateView(View):
+class CalendarTemplateView(ListView):
 
     template_name = 'templates.html'
-
-    def get(self, request):
-
-        #context = initialize_context(request)
-        context = {}
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-
-        return render(request, self.template_name, context)
-
+    model = TimeTableTemplate
+    context_object_name = "templates"
+    paginate_by = 20
+    #order_by="category"
 
 
 class CreateCalendarTemplate(View):
@@ -43,7 +37,7 @@ class CreateCalendarTemplate(View):
         
         #context = initialize_context(request)
 
-        # TODO: JS setup the form (colums depending on the time interval, week templates depending on the number of cycles)
+        # TODO: JS duplicate calendar for different time cycles
         context = {}
         return render(request, self.template_name, context)
 
@@ -52,7 +46,44 @@ class CreateCalendarTemplate(View):
         # TODO: Getting data from the form and saving on the database
         # TODO: Using the data saved as a calendar template for students
         # TODO: Allow having bi weekly schedule template (week A and week B)
+        context = {}
+        data = request.POST
+        templateName = data['template-name']
+        timeInterval = int(data['time-interval'])
+        startTime = data['start-time']
+        endTime = data['end-time']
+        cycle = int(data['cycle']) # The model storing the schedule should be ManyToMany
         
+        timeTableTemplate = TimeTableTemplate.objects.create(
+            name=templateName,
+            interval=timeInterval,
+            start=startTime,
+            end=endTime
+        )
+        previousCells = 0
+
+        for week in range(cycle): # Go through week A, B, and any other week cycle
+           
+            cells = int(data['cells{}'.format(week)])
+            weekTemplate = WeekTemplate.objects.create(
+            name='Week {}'.format(cycle))
+
+            print("Start, End : ", previousCells, cells)
+            for cell in range(previousCells, cells):
+
+                
+                # Save each cell. Will consider merging cells when rendering the template on a calendar
+
+                cell = Cell.objects.create(color=data['cell{}'.format(cell)])
+
+                weekTemplate.cells.add(cell)
+
+            previousCells+=cells
+            weekTemplate.save()
+            timeTableTemplate.weeks.add(weekTemplate)
+        
+        timeTableTemplate.save()
+
         return render(request, self.template_name, context)
 
 

@@ -50,15 +50,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                        
+                            {% for template in templates %}
                             <tr>
-                                <td>Template 1</td>
+                                <td><a href="">{{template.name}}</a></td>
                             </tr>
-                            <tr>
-                                <td>Template 2</td>
-                            </tr>
+                            {% endfor %}
+                            
+                            
                         </tbody>
                     </table>
                 </div>
+
+                {% include "components/pagination.html" %}
+
             </div>
         </div>
         <footer class="bg-white sticky-footer">
