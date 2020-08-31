@@ -151,7 +151,7 @@ def create_events(token, calendarId, courses, startDate, endDate, template):
       pastColor = cells[l]
       pastTime = startTime
       currentTime = startTime
-      BYDAY = 'MO TU WE TH FR SA SU'.split()
+      BYDAY = 'MO TU WE TH FR SA'.split()
 
       print("Value of l: (0-5)", l)
       for i in range(1, nbrCells//6): # Will be the number of lines in the table
@@ -189,12 +189,20 @@ def create_events(token, calendarId, courses, startDate, endDate, template):
             }
           
           pastSeconds = pastTime.seconds
-          pastHours = pastSeconds // 3600
-          pastMinutes = (pastSeconds % 3600) // 60
+          pastHours = toTwoDigits(
+            pastSeconds // 3600
+            )
+          pastMinutes = toTwoDigits(
+            (pastSeconds % 3600) // 60
+            )
 
           currentSeconds = currentTime.seconds
-          currentHours = currentSeconds // 3600
-          currentMinutes = (currentSeconds % 3600) // 60
+          currentHours = toTwoDigits(
+            currentSeconds // 3600
+          )
+          currentMinutes = toTwoDigits(
+            (currentSeconds % 3600) // 60
+          )
 
           event = {
               'Subject': courses[pastColor.color],
@@ -214,7 +222,7 @@ def create_events(token, calendarId, courses, startDate, endDate, template):
                 'timeZone': 'South Africa Standard Time',
                 },
               'categories': ['{} category'.format(colors[pastColor.color])],
-              'recurrence': recurrence,
+              #'recurrence': recurrence,
           }
           #print(event)
           #print()
@@ -222,7 +230,13 @@ def create_events(token, calendarId, courses, startDate, endDate, template):
 
         # TODO: Test saving the calendar
         #         
-        #eventResponse = graph_client.post(
-        #'{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
-        #json=event,
-        #headers=headers)
+        eventResponse = graph_client.post(
+        '{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
+        json=event,
+        headers=headers)
+        
+        if eventResponse.json().get('error')!= None:
+          print("error", print(eventResponse.json()))
+
+      #print(eventResponse.json())
+      #help(eventResponse)

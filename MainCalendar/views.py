@@ -64,7 +64,7 @@ class CreateCalendarTemplate(View):
            
             cells = int(data['cells{}'.format(week)])
             weekTemplate = WeekTemplate.objects.create(
-            name='Week {}'.format(cycle))
+            name='Week {}'.format(week))
 
             print("Start, End : ", previousCells, cells)
             for cell in range(previousCells, cells):
