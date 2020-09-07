@@ -140,7 +140,11 @@ class SetupCalendarView(View):
             request.POST['red'],
             request.POST['yellow'],
             request.POST['green'],
-            request.POST['purple']]
+            request.POST['purple'],
+            request.POST['sport'],
+            request.POST['research'],
+            request.POST['extra-curricular']],
+            
 
         events = create_events(
             token=token,
