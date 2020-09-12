@@ -1,5 +1,4 @@
 from requests_oauthlib import OAuth2Session
-from MainCalendar.eventsData import eventData
 from MainCalendar.models import TimeTableTemplate
 from datetime import datetime  
 from datetime import timedelta  
@@ -132,58 +131,56 @@ def getOffsetDate(start, offset, week):
   return date
 
 
-def setRecurrence(cycle, dayOfWeek, startDate, endDate):
+class EventData:
 
-  return {
-    "recurrence": {
-      "pattern": {
-        "type": 'weekly',
-        "interval": str(cycle),
-        "daysOfWeek": dayOfWeek ,
+  def __init__(self, blocks, startDate, endDate):
+    
+    self.blocks = blocks
+    self.startDate = startDate
+    self.endDate = endDate
+
+  def setEvent(self, pastColor, day, nweek, pastHours, pastMinutes, currentHours, currentMinutes, cycle, dayOfWeek):
+
+
+    colors = "Blue Red Yellow Green Grey Purple Black Orange Orange Orange Orange Orange Orange Orange".split()
+    
+    return {
+      'Subject': self.blocks[pastColor.color-1],
+      'Location':{
+        'displayName':'virtual'
+      } ,
+      "Body": {
+          "ContentType": "HTML",
+          "Content": "This is the course description"
+      },
+      'start': {
+        'dateTime': "{}T{}:{}:00".format(getOffsetDate(self.startDate, day, nweek) , pastHours, pastMinutes),
+        'timeZone': 'South Africa Standard Time',
+      },
+      'end': {
+        'dateTime': "{}T{}:{}:00".format(getOffsetDate(self.startDate, day, nweek), currentHours, currentMinutes),
+        'timeZone': 'South Africa Standard Time',
         },
-      "range": {
-        "type": "endDate",
-        "startDate": startDate,
-        "endDate": endDate 
-        }
-      }
+      'categories': ['{} category'.format(colors[pastColor.color-1])],
+      'recurrence': {
+        "pattern": {
+          "type": 'weekly',
+          "interval": str(cycle),
+          "daysOfWeek": [dayOfWeek] ,
+          },
+        "range": {
+          "type": "endDate",
+          "startDate": getOffsetDate(self.startDate, day, nweek),
+          "endDate": self.endDate 
+          }
+        },
     }
 
-def setEventData(courses, pastColor, startDate, day, nweek, pastHours, pastMinutes, currentHours, currentMinutes):
 
-  colors = 'Gray Blue Red Yellow Green Purple Gray Blue Red Yellow Green Purple Green Yellow Red'.split()
-
-  return {
-    'Subject': courses[pastColor.color],
-    'Location':{
-      'displayName':'virtual'
-    } ,
-    "Body": {
-        "ContentType": "HTML",
-        "Content": "This is the course description"
-    },
-    'start': {
-      'dateTime': "{}T{}:{}:00".format(getOffsetDate(startDate, day, nweek) , pastHours, pastMinutes),
-      'timeZone': 'South Africa Standard Time',
-    },
-    'end': {
-      'dateTime': "{}T{}:{}:00".format(getOffsetDate(startDate, day, nweek), currentHours, currentMinutes),
-      'timeZone': 'South Africa Standard Time',
-      },
-    'categories': ['{} category'.format(colors[pastColor.color])],
-    #'recurrence': recurrence,
-          }
-
-
-def create_events(token, calendarId, courses, startDate, endDate, template):
+def create_events(token, calendarId, blocks, startDate, endDate, template):
   
   # Format for start and end: 2020-09-18
   # End format: YYYYMMDD
-
-  # TODO: Set activities/courses to fit the selection list from the UI
-  courses = 'A B C D E F G H I J K L M N O P Q R S'.split()
-
-  # TODO: Set colors to fit the number of activities/courses
   
   # TODO: Set real locations
   locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split() #**Implement real locations
@@ -201,6 +198,7 @@ def create_events(token, calendarId, courses, startDate, endDate, template):
   endTime = timeTableTemplate.end
   endTime = timedelta(hours=endTime.hour, minutes=endTime.minute)
 
+  eventData = EventData(blocks, startDate, endDate)
   
   for nweek, week in enumerate(weeks):
     
@@ -213,13 +211,13 @@ def create_events(token, calendarId, courses, startDate, endDate, template):
       pastColor = cells[day]
       pastTime = startTime
       currentTime = startTime
-      BYDAY = 'MO TU WE TH FR SA'.split()
+      BYDAY = 'Monday Tuesday Wednesday Thursday Friday Saturday'.split()
 
       # Go over each line in the timetable, representing timeslots 
       for slot in range(nbrCells//6 ):
         print("Slot {}".format(slot))    
         last=False
-        # TODO: The current slot should start from the 2nd
+        
         try: # If it's not the last block
           currentColor = cells[day + (1+slot) *6]
         except: # If it's the last block
@@ -230,20 +228,23 @@ def create_events(token, calendarId, courses, startDate, endDate, template):
         # The timeslot color has changed, meaning it's a new time block
         if currentColor.color!=pastColor.color or last==True:
 
-          recurrence = setRecurrence(cycle, BYDAY[day], startDate, endDate)
-        
-          pastHours = toTwoDigits(pastTime.seconds // 3600)
-          pastMinutes = toTwoDigits((pastTime.seconds % 3600) // 60)
-
-          currentHours = toTwoDigits(currentTime.seconds // 3600)
-          currentMinutes = toTwoDigits((currentTime.seconds % 3600) // 60)
-
-          event = setEventData(courses, pastColor, startDate, day, nweek, pastHours, pastMinutes, currentHours, currentMinutes)
+           # Color 0 is a free block
+          if pastColor.color!=0:
+            
           
-          eventResponse = graph_client.post(
-            '{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
-            json=event,
-            headers=headers)
+            pastHours = toTwoDigits(pastTime.seconds // 3600)
+            pastMinutes = toTwoDigits((pastTime.seconds % 3600) // 60)
+
+            currentHours = toTwoDigits(currentTime.seconds // 3600)
+            currentMinutes = toTwoDigits((currentTime.seconds % 3600) // 60)
+          
+            event = eventData.setEvent(pastColor, day, nweek, pastHours, pastMinutes, currentHours, currentMinutes,
+            cycle, BYDAY[day])
+            
+            eventResponse = graph_client.post(
+              '{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
+              json=event,
+              headers=headers)
 
           pastColor = currentColor
           pastTime = currentTime

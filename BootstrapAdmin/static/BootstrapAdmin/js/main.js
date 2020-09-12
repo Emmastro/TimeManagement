@@ -70,19 +70,21 @@ initUI = () =>{
                     `
                 <td>
                     <select style="width: 100%;" name="cell${cells}">
-                        <option value=0 selected> ------------ </option>
+                        <option value=0 color="white" selected> ------------ </option>
                         <option value=1 color="blue">Blue</option>
                         <option value=2 color="red">Red</option>
                         <option value=3 color="yellow">Yellow</option>
                         <option value=4 color="green">Green</option>
                         <option value=5 color="grey">Grey</option>
                         <option value=6 color="purple">Purple</option>
-                        <option value=7 color="tomato">Breakfast</option>
-                        <option value=8 color="tomato">Snack</option>
-                        <option value=9 color="tomato">Lunch</option>
-                        <option value=10 color="tomato">Dinner</option>
-                        <option value=11 color="fuchsia">Club and socities</option>
-                        <option value=12 color="sandybrown">Research</option>
+                        <option value=7 color="black">Black</option>
+                        <option value=8 color="orange">Orange</option>
+                        <option value=9 color="tomato">Breakfast</option>
+                        <option value=10 color="tomato">Flex</option>
+                        <option value=11 color="tomato">Lunch</option>
+                        <option value=12 color="tomato">Dinner</option>
+                        <option value=13 color="fuchsia">Club and socities</option>
+                        <option value=14 color="sandybrown">Research</option>
                     </select>
                 </td>
                     `

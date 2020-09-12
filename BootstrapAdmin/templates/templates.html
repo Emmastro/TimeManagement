@@ -19,8 +19,10 @@
                {% include 'components/horizontal_navbar.html' %}
 
             <div class="container-fluid">
-                <h3 class="text-center text-dark mx-auto mb-1" style="margin-bottom: 30px;text-align: left;">Available templates<a href={% url 'createCalendarTemplate' %}><button class="btn btn-primary mr-auto" type="button" style="margin-right: 20px;margin-left: 20px;"> New template</button></a></h3>
-                <div class="table-responsive" style="margin-top: 30px;">
+                <h3 class="text-center text-dark mx-auto mb-1" style="margin-bottom: 30px;">Available templates</h3>
+                <h3 class="text-center mx-auto mb-1" style="margin-bottom: 30px;"><a href={% url 'createCalendarTemplate' %} class="btn btn-primary mr-auto text-center" >New template</a></h3>
+                
+                <div class="table-responsive" style="margin-top: 30px;"%>
                     <table class="table">
                         <thead>
                             <tr>
@@ -31,7 +33,7 @@
                         
                             {% for template in templates %}
                             <tr>
-                                <td><a href="">{{template.name}}</a></td>
+                                <td><p href="">{{template.name}}</p></td>
                             </tr>
                             {% endfor %}
                             

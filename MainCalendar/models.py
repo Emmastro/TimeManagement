@@ -5,7 +5,9 @@ from django.db import models
 
 class Block(models.Model):
 
-	BLOCKS = models.TextChoices('Block', "Grey Blue Red Yellow Green Purple Sport Extra-Curricular ")
+	COLORS = "Grey Blue Red Yellow Green Purple Black Orange Pink Pink Orange Orange"
+	BLOCKS = models.TextChoices('Block', "Grey Blue Red Yellow Green Purple Black Orange Sport Extra-Curricular Breakfast Lunch")
+	
 	start = models.TimeField()
 	end = models.TimeField()
 	block = models.CharField(choices = BLOCKS.choices, max_length=20)

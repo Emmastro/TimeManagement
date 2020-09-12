@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
@@ -18,6 +18,7 @@ from .models import*
 from MicrosoftCalendar.graph_helper import get_calendars, get_user, get_calendar_events, create_calendar, create_events
 
 import dateutil.parser
+from django.conf import settings
 
 
 class CalendarTemplateView(ListView):
@@ -35,10 +36,20 @@ class CreateCalendarTemplate(View):
 
     def get(self, request):
         
-        #context = initialize_context(request)
+        try:
+            token = get_token(request)
+        except:
+            return redirect('login')
+            
+        context = initialize_context(request)
+        email = context.get("user").get("email")
 
-        # TODO: JS duplicate calendar for different time cycles
-        context = {}
+        if  email in settings.ADMINS or email.split("@")[1]=="africanleadershipacademy.org" :
+            
+            context["admin"] = True
+        else:
+            return redirect("home")
+
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -69,9 +80,6 @@ class CreateCalendarTemplate(View):
             print("Start, End : ", previousCells, cells)
             for cell in range(previousCells, cells):
 
-                
-                # Save each cell. Will consider merging cells when rendering the template on a calendar
-
                 cell = Cell.objects.create(color=data['cell{}'.format(cell)])
 
                 weekTemplate.cells.add(cell)
@@ -98,9 +106,21 @@ class SetupCalendarView(View):
 
     def get(self, request, *args, **kwargs):
         
+        try:
+            token = get_token(request)
+        except:
+            return redirect('login')
+
         context = initialize_context(request)
+
+        email = context.get("user").get("email")
+        if  email in settings.ADMINS or email.split("@")[1]=="africanleadershipacademy.org" :
+            
+            context["admin"] = True
+            
+        
         templates = TimeTableTemplate.objects.all()
-        token = get_token(request)
+
         # Get the list of calendars from the user
         calendars = get_calendars(token)
         calendarNames = []
@@ -110,6 +130,7 @@ class SetupCalendarView(View):
         
         context['calendarNames'] = calendarNames
         context['templates'] = templates
+        print(context)
         
         return render(request, self.template_name, context)
 
@@ -127,32 +148,36 @@ class SetupCalendarView(View):
             calendar = get_calendars(token=token)[form_calendarId-1]
             calendarId = calendar['id']
 
-        # Add activities/events
-
-        #** Get the blocks from the form (labels of each input)
-
-        blocks = 'Grey Blue Red Yellow Green Purple'.split()
+        #blocks =  [b[0] for b in Block.BLOCKS.choices]
         
         #** Get the activities from the form
-        courses = [
-            request.POST['grey'],
+        blocks = [
             request.POST['blue'],
             request.POST['red'],
             request.POST['yellow'],
             request.POST['green'],
+            request.POST['grey'],
             request.POST['purple'],
+            request.POST['black'],
+            request.POST['orange'],
+            "Breakfast",
+            "Flex",
+            "Lunch",
+            "Dinner",
             request.POST['sport'],
-            request.POST['research'],
-            request.POST['extra-curricular']],
+            "Clubs and societies",
+            request.POST['research-extra-curricular']],
             
-
+        print("Blocks:", blocks[0])
         events = create_events(
             token=token,
             calendarId=calendarId,
-            courses=courses,
+            blocks=blocks[0],
             startDate = request.POST['start'],
             endDate = request.POST['end'],
             template = request.POST['templates'])
+
+        
 
         return render(request, self.template_name, locals())
         
