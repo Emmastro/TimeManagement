@@ -90,7 +90,7 @@ class CreateCalendarTemplate(View):
         
         timeTableTemplate.save()
 
-        return render(request, self.template_name, context)
+        return render(request, "success.html", context)
 
 
 class DashboardView(View):
