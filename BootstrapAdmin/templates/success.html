@@ -17,35 +17,11 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
             
-               {% include 'components/horizontal_navbar.html' %}
+{% include 'components/horizontal_navbar.html' %}
 
-            <div class="container-fluid">
-                <h3 class="text-center text-dark mx-auto mb-1" style="margin-bottom: 30px;">Available templates</h3>
-                <h3 class="text-center mx-auto mb-1" style="margin-bottom: 30px;"><a href={% url 'createCalendarTemplate' %} class="btn btn-primary mr-auto text-center" >New template</a></h3>
-                
-                <div class="table-responsive" style="margin-top: 30px;"%>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Template</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        
-                            {% for template in templates %}
-                            <tr>
-                                <td><p href="">{{template.name}}</p></td>
-                            </tr>
-                            {% endfor %}
-                            
-                            
-                        </tbody>
-                    </table>
-                </div>
-
-                {% include "components/pagination.html" %}
-
-            </div>
+<div class="container-fluid">                
+  <h4 class="card-title text-center center" style="margin-top:20%; margin-bottom:20%" >{{user.name}}, your outlook calendar is set now! </h4>
+</div>
         </div>
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
@@ -60,3 +36,4 @@
 </body>
 
 </html>
+

@@ -6,6 +6,8 @@ from datetime import timedelta
 graph_url = 'https://graph.microsoft.com/v1.0'
 headers = {"Content-Type": "application/json"}
 
+DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Dimanche']
+
 def get_user(token):
   graph_client = OAuth2Session(token=token)
 
@@ -75,7 +77,7 @@ def bydayConvert(value):
 
   for day in BYDAY:
     # Map the abreviated day version to the full day
-    for fullday in 'Monday Tuesday Wednesday Thursday Friday Saturday Sunday'.split():
+    for fullday in DAYS:
       if day.lower() == fullday[:2].lower():
         days.append(fullday)
 
@@ -179,11 +181,13 @@ class EventData:
 
 def create_events(token, calendarId, blocks, startDate, endDate, template):
   
-  # Format for start and end: 2020-09-18
-  # End format: YYYYMMDD
-  
+  requests = {
+    'requests' : [],
+  }
+  requestID = 1
+  allRequests = []
   # TODO: Set real locations
-  locations = 'LC1 LC2 LC5 LC10 MST2 LC4'.split() #**Implement real locations
+  locations = ['LC1', 'LC2', 'LC5', 'LC10', 'MST2', 'LC4']
   
   graph_client = OAuth2Session(token=token)
 
@@ -211,11 +215,10 @@ def create_events(token, calendarId, blocks, startDate, endDate, template):
       pastColor = cells[day]
       pastTime = startTime
       currentTime = startTime
-      BYDAY = 'Monday Tuesday Wednesday Thursday Friday Saturday'.split()
+      BYDAY = DAYS
 
       # Go over each line in the timetable, representing timeslots 
-      for slot in range(nbrCells//6 ):
-        print("Slot {}".format(slot))    
+      for slot in range(nbrCells//6 ):  
         last=False
         
         try: # If it's not the last block
@@ -241,13 +244,39 @@ def create_events(token, calendarId, blocks, startDate, endDate, template):
             event = eventData.setEvent(pastColor, day, nweek, pastHours, pastMinutes, currentHours, currentMinutes,
             cycle, BYDAY[day])
             
-            eventResponse = graph_client.post(
-              '{0}//me/calendars/{1}/events'.format(graph_url,calendarId),
-              json=event,
-              headers=headers)
+            requests['requests'].append(
+              {
+                "id": str(requestID),
+                "url": '/me/calendars/{}/events'.format(calendarId),
+                "method": "POST",
+                "body": event.copy(),
+                "headers": {
+                  "Content-Type": "application/json"
+                  #"Accept": "application/json"
+                }
+              }
+            )
+            
+            requestID+=1
+            if requestID == 5:
+              allRequests.append(requests.copy())
+              requests['requests'] = []
+              requestID=1
+
 
           pastColor = currentColor
           pastTime = currentTime
+  print(allRequests)
 
-          if eventResponse.json().get('error')!= None:
-            print("error", print(eventResponse.json()))
+  for r in allRequests:
+    print("R", r)
+    eventResponse = graph_client.post(
+      'https://graph.microsoft.com/v1.0/$batch',
+      json=r,
+      headers=headers)
+
+    print("RESPONSE: ", eventResponse)
+    
+  if eventResponse.json().get('error')!= None:
+
+    print("error", print(eventResponse.json()))

@@ -77,7 +77,6 @@ class CreateCalendarTemplate(View):
             weekTemplate = WeekTemplate.objects.create(
             name='Week {}'.format(week))
 
-            #print("Start, End : ", previousCells, cells)
             for cell in range(previousCells, cells):
 
                 cell = Cell.objects.create(color=data['cell{}'.format(cell)])
@@ -130,13 +129,15 @@ class SetupCalendarView(View):
         
         context['calendarNames'] = calendarNames
         context['templates'] = templates
-        #print(context)
         
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         """ Get or Create a calendar and add the activities/events on it"""
 
+        import time
+
+        t1 = time.time()
         token = get_token(request)
         form_calendarId = int(request.POST['calendar'])
 
@@ -168,7 +169,6 @@ class SetupCalendarView(View):
             "Clubs and societies",
             request.POST['research-extra-curricular']],
             
-        #print("Blocks:", blocks[0])
         events = create_events(
             token=token,
             calendarId=calendarId,
@@ -177,9 +177,11 @@ class SetupCalendarView(View):
             endDate = request.POST['end'],
             template = request.POST['templates'])
 
-        
+        context = initialize_context(request)
 
-        return render(request, self.template_name, locals())
+        print("Performance : ", time.time() - t1)
+
+        return render(request, "success.html", context)
         
 
 def privacy(request):
