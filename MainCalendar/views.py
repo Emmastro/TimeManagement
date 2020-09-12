@@ -77,7 +77,7 @@ class CreateCalendarTemplate(View):
             weekTemplate = WeekTemplate.objects.create(
             name='Week {}'.format(week))
 
-            print("Start, End : ", previousCells, cells)
+            #print("Start, End : ", previousCells, cells)
             for cell in range(previousCells, cells):
 
                 cell = Cell.objects.create(color=data['cell{}'.format(cell)])
@@ -130,7 +130,7 @@ class SetupCalendarView(View):
         
         context['calendarNames'] = calendarNames
         context['templates'] = templates
-        print(context)
+        #print(context)
         
         return render(request, self.template_name, context)
 
@@ -168,7 +168,7 @@ class SetupCalendarView(View):
             "Clubs and societies",
             request.POST['research-extra-curricular']],
             
-        print("Blocks:", blocks[0])
+        #print("Blocks:", blocks[0])
         events = create_events(
             token=token,
             calendarId=calendarId,
